@@ -36,6 +36,7 @@ class Testi extends REST_Controller {
 
        // $id = $this->input->get('id');
        $id = $this->uri->segment(3);
+       // segment(3) on siis kolmas parametri urlissa
 
         // If the id parameter doesn't exist return all Testis
         if ($id === NULL)
