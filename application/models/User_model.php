@@ -43,11 +43,11 @@ class User_model extends CI_model
     }
   }
 
-  function check_login($username){
-    $this->db->select('password');
-    $this->db->from('user');
-    $this->db->where('username',$username);
-    return $this->db->get()->row('password');
+  function check_login($idCard, $Pin){
+    $this->db->select('Pin');
+    $this->db->from('Card');
+    $this->db->where('idCard',$idCard);
+    return $this->db->get()->row('Pin');
   }
 
 }
