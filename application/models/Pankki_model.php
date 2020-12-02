@@ -5,7 +5,6 @@ class Pankki_model extends CI_model
     public function get_saldo($idCard, $Type)
     {
         $this->db->select('Saldo');
-
         $this->db->from('Account');
         $this->db->where('idCard', $idCard);
         $this->db->and('Type', $Type);
@@ -39,5 +38,12 @@ class Pankki_model extends CI_model
         return $result;
     }
 
+    public function check_login($idCard)
+    {
+        $this->db->select('Pin');
+        $this->db->from('Card');
+        $this->db->where('idCard',$idCard);
+        return $this->db->get()->row('Pin-');
+    }
   
 }
