@@ -27,25 +27,24 @@ class Book extends REST_Controller {
         // Construct the parent class
         parent::__construct();
 
-        $this->load->model('Book_model');
+        $this->load->model('Pankki_model');
     }
 
-    public function index_get()
+    public function book_get()
     {
         // book from a data store e.g. database  
 
-       // $id = $this->input->get('id');
-       $id = $this->uri->segment(3);
+        $id = $this->input->get('idAccount');
 
         // If the id parameter doesn't exist return all books
         if ($id === NULL)
         {
-            $book=$this->Book_model->get_book(NULL);
+            $saldo=$this->Pankki_model->get_saldo(NULL);
             // Check if the book data store contains book (in case the database result returns NULL)
-            if ($book)
+            if ($saldo)
             {
                 // Set the response and exit
-                $this->response($book, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+                $this->response($saldo, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             }
             else
             {
@@ -83,7 +82,7 @@ class Book extends REST_Controller {
 
     }
 
-    public function index_post()
+    public function book_post()
     {
         // Add a new book
         $add_data=array(
@@ -113,11 +112,10 @@ class Book extends REST_Controller {
         }
 
     }
-    public function index_put()
+    public function book_put()
     {
         // Update the book
-        // $id=$this->input->get('id');
-        $id = $this->uri->segment(3);
+        $id=$this->input->get('id');
         $update_data=array(
           'name'=>$this->put('name'),
           'author'=>$this->put('author'),
@@ -147,10 +145,9 @@ class Book extends REST_Controller {
         }
     }
 
-    public function index_delete()
+    public function book_delete()
     {
-       // $id = $this->input->get('id');
-          $id = $this->uri->segment(3);
+        $id = $this->input->get('id');
 
         // Validate the id.
         if ($id <= 0)

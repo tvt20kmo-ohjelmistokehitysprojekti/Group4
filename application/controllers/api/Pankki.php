@@ -2,159 +2,73 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
 require APPPATH . 'libraries/REST_Controller.php';
-
 
 class Pankki extends REST_Controller {
 
     function __construct()
     {
-        //enable cors
+       
         header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: POST");
-        // Construct the parent class
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+       
         parent::__construct();
 
         $this->load->model('Pankki_model');
     }
-    public function nosto_post() 
-    
-        $add_data=array(
-          'Amount'=>$this->post('Amount'),
-          'idAccount'=>$this->post('idAccount')
-        );
-        if ($add_data["Amount"]==NULL || $add_data["idAccount"]==NULL){
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Bad Reguest'
-            ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-        else{
 
-        $message=$this->Pankki_model->nosto($add_data); 
-       
-                    
-        $this->response($message, REST_Controller::HTTP_OK);
-        }
-    }
-    
-    public function Saldo_post()   
+    public function saldo_get()
     {
-        $idAccount = $this->post('idAccount');
+        // book from a data store e.g. database  
 
-        $message=$this->Pankki_model->get_saldo($idAccount);  
-        if(!$message){
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Bad Reguest'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-        else{
-            $this->response($message, REST_Controller::HTTP_OK);
-        }
-    }
-    public function Transaction_post()   
-    { 
-        $idAccount = $this->post('idAccount'); 
-            $message=$this->Pankki_model->get_transacts($idAccount);
-            if(!$message){
+        $id = $this->input->get('idAccount');
+
+        // If the id parameter doesn't exist return all books
+        if ($id === NULL)
+        {
+            $saldo=$this->Pankki_model->get_saldo(NULL);
+            // Check if the book data store contains book (in case the database result returns NULL)
+            if ($saldo)
+            {
+                // Set the response and exit
+                $this->response($saldo, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            }
+            else
+            {
+                // Set the response and exit
                 $this->response([
                     'status' => FALSE,
-                    'message' => 'Bad Reguest'
-                ], REST_Controller::HTTP_BAD_REQUEST);
+                    'message' => 'No book were found'
+                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
             }
-            else{
-            $this->response($message, REST_Controller::HTTP_OK);
-            }
-    }
-    public function Login_post(){ 
-
-        $idCard=$this->post('idCard');
-        $Pin=$this->post('Pin');
-               
-        
-        if ($idCard===NULL || $Pin ===NULL){
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Bad Reguest'
-            ], REST_Controller::HTTP_BAD_REQUEST);
         }
-        else{ 
-            $encrypted_password=$this->Pankki_model->check_login($idCard);
 
-            if(password_verify($Pin,$encrypted_password)){
-            
-                $result = TRUE;
+         // Find and return a single record for a particular book.
+        else {
+            // Validate the id.
+            if ($id <= 0)
+            {
+                // Invalid id, set the response and exit.
+                $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
             }
-            else{
-            $result = FALSE;
+
+            // Get the book from the database, using the id as key for retrieval.
+            $book=$this->Pankki_model->get_saldo($id);
+            if (!empty($saldo))
+            {
+                $this->set_response($saldo, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             }
-            $this->response($result, REST_Controller::HTTP_OK);
+            else
+            {
+                $this->set_response([
+                    'status' => FALSE,
+                    'message' => 'book could not be found'
+                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+            }
         }
 
     }
 
-    public function Update_pwd_post() 
-    {
-        
-        $clear_password=$this->post('Pin');
-        $encrypted_pass = password_hash($clear_password,PASSWORD_DEFAULT);
-        $update_data=array(
-          'Pin'=>$encrypted_pass,
-          'idCard'=> $this->post('idCard')
-        );
-        $result=$this->Pankki_model->update_password($update_data);
-
-        if($result)
-        {
-          $message = 'success';
-
-            $this->set_response($message, REST_Controller::HTTP_CREATED); 
-        }
-        else
-        {
-            // Set the response and exit
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Can not update data'
-            ], REST_Controller::HTTP_CONFLICT); 
-        }
-    }
     
-    public function Fetch_account_post()
-    {   
 
-        $add_data=array(
-        'idCard' => $this->post('idCard'),
-        'Type' => $this->post('Type')
-        );
-        $idAccount=$this->Pankki_model->fetch_accounts($add_data);
-
-        if(!$idAccount){
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Bad Reguest'
-            ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-        else{
-        $this->response($idAccount, REST_Controller::HTTP_OK);
-        }
-        
-    }
-
-    public function Name_post(){ 
-        $idCard = $this->post('idCard');
-
-        $name=$this->Pankki_model->name($idCard);
-        if(!$name){
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Bad Reguest'
-            ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-        else{
-        $this->response($name, REST_Controller::HTTP_OK);
-        }
-    }
 }

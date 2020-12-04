@@ -2,48 +2,19 @@
 
 class Pankki_model extends CI_model
 {
-    public function get_saldo($idCard, $Type)
-    {
-        $this->db->select('Saldo');
+    function get_saldo($idAccount){
+        $this->db->select('*');
         $this->db->from('Account');
-        $this->db->where('idCard', $idCard);
-        $this->db->and('Type', $Type);
+        if($id !== NULL) {
+          $this->db->where('idAccount',$idAccount);
+        }
+        return $this->db->get()->result_array();
+}
 
-       $result = $this->db->get()->row('Saldo');
-     
-        return $result;
-    }
-
-    public function nosto($idAccount, $idCard, $Amount)
-    {
-        $sql = "CALL nosto(".$idAccount",".$idCard","$Amount");";
-
+    function post_nosto($idAccount, $idCard, $Amount){
+        $sql = "CAll nosto(".$idAccount.",".$idCard.",".$Amount.");";
         $query = $this->db->query($sql);
-        $result = $query->row('ret');
-
-        $query->free_result();
-
-        return $result;
-    }
-
-    public function get_transacts($idCard, $Type)
-    {
-        $this->db->select('Date, Amount, Type');
-        $this->db->from('Transaction');
-        $this->db->join('Account', ,'Account.idCard=Transaction.idCard');
-        $this->db->where('idCard', $idCard);
-  
-        $result = $this->db->get()->result();
-
-        return $result;
-    }
-
-    public function check_login($idCard)
-    {
-        $this->db->select('Pin');
-        $this->db->from('Card');
-        $this->db->where('idCard',$idCard);
-        return $this->db->get()->row('Pin-');
-    }
-  
+        $result = $query->result_array();
+        return $result[0];
+       }
 }
