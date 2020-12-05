@@ -27,7 +27,7 @@ class User extends REST_Controller {
         // Construct the parent class
         parent::__construct();
 
-        $this->load->model('User_model');
+        $this->load->model('Login_model');
     }
 
     public function user_get()
@@ -112,24 +112,23 @@ class User extends REST_Controller {
         }
 
     }
-    public function user_put()
+    public function Card_post($id=NULL)
     {
         // Update the user
-        $id=$this->input->get('id');
-        $clear_password=$this->post('password');
+        $id=$this->input->get('idCard');
+        $clear_password=$this->post('Pin');
         $encrypted_pass = password_hash($clear_password,PASSWORD_DEFAULT);
         $update_data=array(
-          'username'=>$this->post('username'),
-          'password'=>$encrypted_pass
+          //'username'=>$this->post('username'),
+          'Pin'=>$encrypted_pass
         );
-        $result=$this->User_model->update_user($id, $update_data);
+        $result=$this->Login_model->update_Card($id, $update_data);
 
         if($result)
         {
           $message = [
-              'id_user' => $insert_id,
-              'username' => $this->post('username'),
-              'password' => $this->post('password'),
+              'idCard' => $insert_id,
+              'Pin' => $this->post('Pin'),
               'message' => 'Added a resource'
           ];
 
@@ -144,36 +143,4 @@ class User extends REST_Controller {
             ], REST_Controller::HTTP_CONFLICT); // CAN NOT CREATE (409) being the HTTP response code
         }
     }
-
-    public function user_delete()
-    {
-        $id = $this->input->get('id');
-
-        // Validate the id.
-        if ($id <= 0)
-        {
-            // Set the response and exit
-            $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-        }
-        $result=$this->User_model->delete_user($id);
-        if ($result)
-        {
-          $message = [
-              'id_user' => $id,
-              'message' => 'Deleted the resource'
-          ];
-          $this->set_response($message, REST_Controller::HTTP_OK);
-        }
-        else
-        {
-            // Set the response and exit
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Can not delete data'
-            ], REST_Controller::HTTP_CONFLICT); // CAN NOT CREATE (409) being the HTTP response code
-        }
-    }
-
-
-
 }
