@@ -1,12 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require APPPATH . 'libraries/REST_Controller.php';
 
-class Login extends CI_Controller {
-    public function index_get(){
+class Login extends REST_Controller {
+    public function Login_post(){
         $this->load->model('Login_model');
-        $idCard=$this->input->get('idCard');
-        $plaintext_pin=$this->input->get('Pin');
-        $encrypted_pin=$this->Login_model->check_login($idCard);
+        $idCard=$this->post('idCard');
+        $plaintext_pin=$this->post('Pin');
+
+        $encrypted_pin=$this->Login_model->login($idCard);
 
         if(password_verify($plaintext_pin,$encrypted_pin)){
           $result=true;

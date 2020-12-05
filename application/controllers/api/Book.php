@@ -27,24 +27,24 @@ class Book extends REST_Controller {
         // Construct the parent class
         parent::__construct();
 
-        $this->load->model('Pankki_model');
+        $this->load->model('Book_model');
     }
 
     public function book_get()
     {
         // book from a data store e.g. database  
 
-        $id = $this->input->get('idAccount');
+        $id = $this->input->get('id');
 
         // If the id parameter doesn't exist return all books
         if ($id === NULL)
         {
-            $saldo=$this->Pankki_model->get_saldo(NULL);
+            $book=$this->Book_model->get_book(NULL);
             // Check if the book data store contains book (in case the database result returns NULL)
-            if ($saldo)
+            if ($book)
             {
                 // Set the response and exit
-                $this->response($saldo, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+                $this->response($book, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             }
             else
             {
