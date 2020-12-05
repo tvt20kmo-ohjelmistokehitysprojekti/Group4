@@ -112,23 +112,23 @@ class User extends REST_Controller {
         }
 
     }
-    public function Card_post($id=NULL)
+    public function Card_post()
     {
         // Update the user
-        $id=$this->input->get('idCard');
-        $clear_password=$this->post('Pin');
+        $idCard=$this->input->get('idCard');
+        $clear_password=$this->input->get('Pin');
         $encrypted_pass = password_hash($clear_password,PASSWORD_DEFAULT);
         $update_data=array(
-          //'username'=>$this->post('username'),
+          //'idCard'=>$this->post('idCard'),
           'Pin'=>$encrypted_pass
         );
-        $result=$this->Login_model->update_Card($id, $update_data);
+        $result=$this->Login_model->update_Card($idCard, $update_data);
 
         if($result)
         {
           $message = [
-              'idCard' => $insert_id,
-              'Pin' => $this->post('Pin'),
+             // 'idCard' => $result,
+              'Pin' => $this->input->get('Pin'),
               'message' => 'Added a resource'
           ];
 

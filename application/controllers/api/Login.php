@@ -4,18 +4,6 @@ require APPPATH . 'libraries/REST_Controller.php';
 
 class Login extends REST_Controller {
 
-<<<<<<< HEAD
-  function __construct()
-  {
-      //enable cors
-      header('Access-Control-Allow-Origin: *');
-      header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-      // Construct the parent class
-      parent::__construct();
-  }
-  
-    public function Login_post(){
-=======
     function __construct()
     {
         //enable cors
@@ -25,11 +13,10 @@ class Login extends REST_Controller {
         parent::__construct();
     }
 
-    public function login_post(){
->>>>>>> main
+    public function index_get(){
         $this->load->model('Login_model');
-        $idCard=$this->post('idCard');
-        $plaintext_password=$this->post('Pin');
+        $idCard=$this->input->get('idCard');
+        $plaintext_password=$this->input->get('Pin');
         
         $encrypted_password=$this->Login_model->login($idCard);
 
