@@ -13,10 +13,10 @@ class Login extends REST_Controller {
         parent::__construct();
     }
 
-    public function login_post(){
+    public function index_get(){
         $this->load->model('Login_model');
-        $idCard=$this->post('idCard');
-        $plaintext_password=$this->post('Pin');
+        $idCard=$this->input->get('idCard');
+        $plaintext_password=$this->input->get('Pin');
         
         $encrypted_password=$this->Login_model->login($idCard);
 
