@@ -121,4 +121,30 @@ class Pankki extends REST_Controller {
 
     }
  
+    
+    public function nosto_post() 
+    {
+        $idAccount=$this->post('idAccount');
+        $idCard=$this->post('idCard');
+        $Amount=$this->post('Amount');
+        $result=$this->Pankki_model->nosto($idAccount, $idCard, $Amount);
+
+        if($result)
+        {
+          $message = [
+
+              'message' => 'Nosto onnistui'
+          ];
+
+            $this->set_response($message, REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
+        }
+        else
+        {
+            // Set the response and exit
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Tilillä ei katetta'
+            ], REST_Controller::HTTP_CONFLICT); // CAN NOT CREATE (409) being the HTTP response code
+        }
+    }
 }
