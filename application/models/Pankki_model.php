@@ -19,10 +19,16 @@ class Pankki_model extends CI_model
       }
       return $this->db->get()->result_array();
 }
-    function nosto($idAccount, $idCard, $Amount){
-        $sql = "Call nosto(".$idAccount.",".$idCard.",".$Amount.");";
-        $query = $this->db->query($sql);
-        $result = $query->result_array();
-        return $result[0];
-       }
+   
+    
+function nosto($idAccount, $idCard, $Amount){
+  $data = array('idAccount'=> $idAccount,'idCard'=> $idCard,'Amount'=> $Amount);
+  $this->db->query("call nosto(?,?,?)",$data);
+  if($this->db->affected_rows()){
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
 }
