@@ -147,4 +147,58 @@ class Pankki extends REST_Controller {
             ], REST_Controller::HTTP_CONFLICT); // CAN NOT CREATE (409) being the HTTP response code
         }
     }
+
+    public function tili_get()
+    {
+        // book from a data store e.g. database  
+
+        $idCard = $this->input->get('idCard');
+        $Type = $this->input->get('Type');
+
+
+        // If the id parameter doesn't exist return all books
+        if ($idCard === NULL)
+        {
+            $tili=$this->Pankki_model->get_tili(NULL);
+            // Check if the book data store contains book (in case the database result returns NULL)
+            if ($tili)
+            {
+                // Set the response and exit
+                $this->response($tili, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            }
+            else
+            {
+                // Set the response and exit
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'No book were found'
+                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+            }
+        }
+
+         // Find and return a single record for a particular book.
+        else {
+            // Validate the id.
+            if ($idCard <= 0)
+            {
+                // Invalid id, set the response and exit.
+                $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
+            }
+
+            // Get the book from the database, using the id as key for retrieval.
+            $tili=$this->Pankki_model->get_tili($idCard,$Type);
+            if (!empty($tili))
+            {
+                $this->set_response($tili, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+            }
+            else
+            {
+                $this->set_response([
+                    'status' => FALSE,
+                    'message' => 'Tiliä ei löydy'
+                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
+            }
+        }
+
+    }
 }
