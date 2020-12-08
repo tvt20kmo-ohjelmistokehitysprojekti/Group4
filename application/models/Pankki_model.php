@@ -31,4 +31,14 @@ function nosto($idAccount, $idCard, $Amount){
     return FALSE;
   }
 }
+
+function get_tili($idCard,$Type){
+  $this->db->select('idAccount');
+  $this->db->from('Account');
+ if($idCard !== NULL) {
+   $this->db->where('idCard',$idCard,);
+   $this->db->where('Type',$Type,);
+ }
+ return $this->db->get()->result_array();
+}
 }
