@@ -1,6 +1,7 @@
 #ifndef KORTTI_H
 #define KORTTI_H
-
+#include <menu.h>
+#include <nosto.h>
 #include <QWidget>
 
 namespace Ui {
