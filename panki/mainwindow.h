@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include <kortti.h>
 #include <menu.h>
+#include <nosto.h>
 
 #include <QMainWindow>
 

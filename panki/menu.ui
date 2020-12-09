@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>190</y>
+     <y>100</y>
      <width>161</width>
      <height>51</height>
     </rect>
@@ -52,8 +52,8 @@
   <widget class="QPushButton" name="btnChooseSaldo">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>110</y>
+     <x>220</x>
+     <y>30</y>
      <width>161</width>
      <height>51</height>
     </rect>
@@ -101,6 +101,16 @@
    </property>
    <property name="text">
     <string>sgsdg</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="texTapahtumat">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>170</y>
+     <width>161</width>
+     <height>111</height>
+    </rect>
    </property>
   </widget>
  </widget>

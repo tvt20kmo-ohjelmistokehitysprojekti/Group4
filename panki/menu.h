@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 #include <kortti.h>
-
+#include <nosto.h>
 #include <QWidget>
 
 namespace Ui {

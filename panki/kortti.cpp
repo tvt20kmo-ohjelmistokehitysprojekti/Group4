@@ -23,7 +23,6 @@ void kortti::on_btnChooseDebit_clicked()
 {
 
     QString card_id=getCardID();
-    QString acc_id;
 
     QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Tili/?idCard="+card_id+"&Type=debit"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -44,12 +43,21 @@ void kortti::on_btnChooseDebit_clicked()
         QByteArray response_data = reply->readAll();
 
         qDebug()<<"DATA:"+response_data;
+        QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+        QJsonObject jsobj = json_doc.object();
+        QJsonArray jsarr = json_doc.array();
+        QString idAccount;
+         foreach (const QJsonValue &value, jsarr){
+              QJsonObject jsob = value.toObject();
+              idAccount+=jsob["idAccount"].toString();
+              qDebug()<<idAccount;
+                }
 
         reply->deleteLater();
 
 
         menu *me=new menu();
-        me->setAccID(acc_id);
+        me->setAccID(idAccount);
         me->show();
         this->close();
 
@@ -60,7 +68,6 @@ void kortti::on_btnChooseCredit_clicked()
 {
 
     QString card_id=getCardID();
-    QString acc_id;
 
     QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Tili/?idCard="+card_id+"&Type=credit"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -81,14 +88,24 @@ void kortti::on_btnChooseCredit_clicked()
         QByteArray response_data = reply->readAll();
 
         qDebug()<<"DATA:"+response_data;
+        QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+        QJsonObject jsobj = json_doc.object();
+        QJsonArray jsarr = json_doc.array();
+        QString idAccount;
+         foreach (const QJsonValue &value, jsarr){
+              QJsonObject jsob = value.toObject();
+              idAccount+=jsob["idAccount"].toString();
+              qDebug()<<idAccount;
+                }
 
         reply->deleteLater();
 
 
         menu *me=new menu();
-        me->setAccID(acc_id);
+        me->setAccID(idAccount);
         me->show();
         this->close();
+
 }
 
 
