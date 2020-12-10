@@ -100,7 +100,7 @@
     </font>
    </property>
    <property name="text">
-    <string>sgsdg</string>
+    <string/>
    </property>
   </widget>
   <widget class="QTextEdit" name="texTapahtumat">

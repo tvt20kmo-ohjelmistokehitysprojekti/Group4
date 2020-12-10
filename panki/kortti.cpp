@@ -1,5 +1,6 @@
 #include "kortti.h"
 #include "menu.h"
+#include "mysingleton.h"
 #include "ui_kortti.h"
 #include <QtNetwork>
 #include <QNetworkAccessManager>
@@ -21,8 +22,9 @@ kortti::~kortti()
 
 void kortti::on_btnChooseDebit_clicked()
 {
-
-    QString card_id=getCardID();
+    QString card_id;
+    MySingleton *myS=MySingleton::getInstance();
+    card_id= myS->getCardID();
 
     QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Tili/?idCard="+card_id+"&Type=debit"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -55,9 +57,8 @@ void kortti::on_btnChooseDebit_clicked()
 
         reply->deleteLater();
 
-
+        myS->setAccID(idAccount);
         menu *me=new menu();
-        me->setAccID(idAccount);
         me->show();
         this->close();
 
@@ -66,8 +67,9 @@ void kortti::on_btnChooseDebit_clicked()
 
 void kortti::on_btnChooseCredit_clicked()
 {
-
-    QString card_id=getCardID();
+    QString card_id;
+    MySingleton *myS=MySingleton::getInstance();
+    card_id= myS->getCardID();
 
     QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Tili/?idCard="+card_id+"&Type=credit"));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -100,21 +102,10 @@ void kortti::on_btnChooseCredit_clicked()
 
         reply->deleteLater();
 
-
+        myS->setAccID(idAccount);
         menu *me=new menu();
-        me->setAccID(idAccount);
         me->show();
         this->close();
 
 }
 
-
-QString kortti::getCardID() const
-{
-    return CardID;
-}
-
-void kortti::setCardID(const QString &value)
-{
-    CardID = value;
-}

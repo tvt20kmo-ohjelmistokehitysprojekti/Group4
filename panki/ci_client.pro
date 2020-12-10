@@ -20,13 +20,15 @@ SOURCES += \
     mainwindow.cpp \
     kortti.cpp \
     menu.cpp \
-    nosto.cpp
+    nosto.cpp \
+    mysingleton.cpp
 
 HEADERS += \
     mainwindow.h \
     kortti.h \
     menu.h \
-    nosto.h
+    nosto.h \
+    mysingleton.h
 
 FORMS += \
     mainwindow.ui \

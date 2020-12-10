@@ -19,14 +19,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_btnShowBooks_clicked();
-
-    void on_btnAddBook_clicked();
-
-    void on_btnDeleteBook_clicked();
-
-    void on_btnUpdateBook_clicked();
-
 
     void on_btnLogin_clicked();
 
