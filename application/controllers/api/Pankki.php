@@ -19,23 +19,22 @@ class Pankki extends REST_Controller {
 
     public function saldo_get()
     {
-        // book from a data store e.g. database  
+        
 
         $id = $this->input->get('idAccount');
 
-        // If the id parameter doesn't exist return all books
         if ($id === NULL)
         {
             $saldo=$this->Pankki_model->get_saldo(NULL);
-            // Check if the book data store contains book (in case the database result returns NULL)
+        
             if ($saldo)
             {
-                // Set the response and exit
+           
                 $this->response($saldo, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             }
             else
             {
-                // Set the response and exit
+          
                 $this->response([
                     'status' => FALSE,
                     'message' => 'No book were found'
@@ -43,16 +42,16 @@ class Pankki extends REST_Controller {
             }
         }
 
-         // Find and return a single record for a particular book.
+     
         else {
-            // Validate the id.
+         
             if ($id <= 0)
             {
-                // Invalid id, set the response and exit.
+            
                 $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
             }
 
-            // Get the book from the database, using the id as key for retrieval.
+       
             $saldo=$this->Pankki_model->get_saldo($id);
             if (!empty($saldo))
             {
@@ -71,23 +70,23 @@ class Pankki extends REST_Controller {
 
     public function tapahtumat_get()
     {
-        // book from a data store e.g. database  
+     
 
         $id = $this->input->get('idAccount');
 
-        // If the id parameter doesn't exist return all books
+       
         if ($id === NULL)
         {
             $tapahtumat=$this->Pankki_model->get_tapahtumat(NULL);
-            // Check if the book data store contains book (in case the database result returns NULL)
+        
             if ($tapahtumat)
             {
-                // Set the response and exit
+            
                 $this->response($tapahtumat, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             }
             else
             {
-                // Set the response and exit
+        
                 $this->response([
                     'status' => FALSE,
                     'message' => 'No book were found'
@@ -95,16 +94,16 @@ class Pankki extends REST_Controller {
             }
         }
 
-         // Find and return a single record for a particular book.
+     
         else {
-            // Validate the id.
+       
             if ($id <= 0)
             {
-                // Invalid id, set the response and exit.
+        
                 $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
             }
 
-            // Get the book from the database, using the id as key for retrieval.
+         
             $tapahtumat=$this->Pankki_model->get_tapahtumat($id);
             if (!empty($tapahtumat))
             {
@@ -140,7 +139,7 @@ class Pankki extends REST_Controller {
         }
         else
         {
-            // Set the response and exit
+         
             $this->response([
                 'status' => FALSE,
                 'message' => 'Tilillä ei katetta'
@@ -150,25 +149,25 @@ class Pankki extends REST_Controller {
 
     public function tili_get()
     {
-        // book from a data store e.g. database  
+
 
         $idCard = $this->input->get('idCard');
         $Type = $this->input->get('Type');
 
 
-        // If the id parameter doesn't exist return all books
+  
         if ($idCard === NULL)
         {
             $tili=$this->Pankki_model->get_tili(NULL);
-            // Check if the book data store contains book (in case the database result returns NULL)
+      
             if ($tili)
             {
-                // Set the response and exit
+           
                 $this->response($tili, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
             }
             else
             {
-                // Set the response and exit
+      
                 $this->response([
                     'status' => FALSE,
                     'message' => 'No book were found'
@@ -176,16 +175,16 @@ class Pankki extends REST_Controller {
             }
         }
 
-         // Find and return a single record for a particular book.
+
         else {
-            // Validate the id.
+          
             if ($idCard <= 0)
             {
-                // Invalid id, set the response and exit.
+              
                 $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
             }
 
-            // Get the book from the database, using the id as key for retrieval.
+         
             $tili=$this->Pankki_model->get_tili($idCard,$Type);
             if (!empty($tili))
             {
