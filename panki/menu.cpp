@@ -2,6 +2,7 @@
 #include "ui_menu.h"
 #include "kortti.h"
 #include "nosto.h"
+#include "mysingleton.h"
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
@@ -32,7 +33,9 @@ void menu::on_btnChooseWithdraw_clicked()
 
 void menu::on_btnChooseSaldo_clicked()
 {
-            QString idAccount=getAccID();
+            QString idAccount;
+            MySingleton *myS=MySingleton::getInstance();
+            idAccount= myS->getAccID();
 
             QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Saldo/?idAccount="+idAccount));
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -66,29 +69,23 @@ void menu::on_btnChooseSaldo_clicked()
                reply->deleteLater();
        }
 
-QString menu::getAccID() const
-{
-    return AccID;
-}
 
-void menu::setAccID(const QString &value)
-{
-    AccID = value;
-}
 
 void menu::on_btnChooseTransactions_clicked()
 {
-    QString idAccount=getAccID();
+            QString idAccount;
+            MySingleton *myS=MySingleton::getInstance();
+            idAccount= myS->getAccID();
 
-    QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Tapahtumat/?idAccount="+idAccount));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    //Authenticate
-    QString username="admin";
-    QString password="1234";
-    QString concatenatedCredentials = username + ":" + password;
-       QByteArray data = concatenatedCredentials.toLocal8Bit().toBase64();
-       QString headerData = "Basic " + data;
-       request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
+            QNetworkRequest request(QUrl("http://www.students.oamk.fi/~t9momi01/Group4/index.php/api/Pankki/Tapahtumat/?idAccount="+idAccount));
+            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+           //Authenticate
+           QString username="admin";
+            QString password="1234";
+           QString concatenatedCredentials = username + ":" + password;
+             QByteArray data = concatenatedCredentials.toLocal8Bit().toBase64();
+            QString headerData = "Basic " + data;
+          request.setRawHeader( "Authorization", headerData.toLocal8Bit() );
 
        QNetworkAccessManager nam;
        QNetworkReply *reply = nam.get(request);

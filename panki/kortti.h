@@ -16,9 +16,6 @@ public:
     explicit kortti(QWidget *parent = 0);
     ~kortti();
 
-    QString getCardID()const;
-    void setCardID(const QString &value);
-
 
 private slots:
     void on_btnChooseDebit_clicked();
@@ -27,7 +24,7 @@ private slots:
 
 private:
     Ui::kortti *ui;
-    QString CardID;
+
 
 
 };

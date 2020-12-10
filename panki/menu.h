@@ -16,9 +16,6 @@ public:
     explicit menu(QWidget *parent = 0);
     ~menu();
 
-    QString getAccID() const;
-    void setAccID(const QString &value);
-
 private slots:
     void on_btnChooseWithdraw_clicked();
 
@@ -30,7 +27,7 @@ private slots:
 
 private:
     Ui::menu *ui;
-    QString AccID;
+
 };
 
 #endif // MENU_H
