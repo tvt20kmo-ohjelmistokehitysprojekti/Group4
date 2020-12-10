@@ -30,96 +30,17 @@ class User extends REST_Controller {
         $this->load->model('Login_model');
     }
 
-    public function user_get()
-    {
-        // user from a data store e.g. database
-
-        $id = $this->input->get('id');
-
-        // If the id parameter doesn't exist return all users
-        if ($id === NULL)
-        {
-            $user=$this->User_model->get_user(NULL);
-            // Check if the user data store contains user (in case the database result returns NULL)
-            if ($user)
-            {
-                // Set the response and exit
-                $this->response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                // Set the response and exit
-                $this->response([
-                    'status' => FALSE,
-                    'message' => 'No user were found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
-        }
-
-         // Find and return a single record for a particular user.
-        else {
-            // Validate the id.
-            if ($id <= 0)
-            {
-                // Invalid id, set the response and exit.
-                $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-            }
-
-            // Get the user from the database, using the id as key for retrieval.
-            $user=$this->User_model->get_user($id);
-            if (!empty($user))
-            {
-                $this->set_response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                $this->set_response([
-                    'status' => FALSE,
-                    'message' => 'user could not be found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
-        }
-
-    }
-
-    public function user_post()
-    {
-        // Add a new user
-        $clear_password=$this->post('password');
-        $encrypted_pass = password_hash($clear_password,PASSWORD_DEFAULT);
-        $add_data=array(
-          'username'=>$this->post('username'),
-          'password'=>$encrypted_pass
-        );
-        $insert_id=$this->User_model->add_user($add_data);
-        if($insert_id)
-        {
-            $message = [
-                'id_user' => $insert_id,
-                'username' => $this->post('username'),
-                'password' => $this->post('password'),
-                'message' => 'Added a resource'
-            ];
-            $this->set_response($message, REST_Controller::HTTP_CREATED); // CREATED (201) being the HTTP response code
-        }
-        else
-        {
-            // Set the response and exit
-            $this->response([
-                'status' => FALSE,
-                'message' => 'Can not add data'
-            ], REST_Controller::HTTP_CONFLICT); // CAN NOT CREATE (409) being the HTTP response code
-        }
+  
 
     }
     public function Card_post()
     {
-        // Update the user
+        
         $idCard=$this->input->get('idCard');
         $clear_password=$this->input->get('Pin');
         $encrypted_pass = password_hash($clear_password,PASSWORD_DEFAULT);
         $update_data=array(
-          //'idCard'=>$this->post('idCard'),
+        
           'Pin'=>$encrypted_pass
         );
         $result=$this->Login_model->update_Card($idCard, $update_data);
@@ -127,7 +48,7 @@ class User extends REST_Controller {
         if($result)
         {
           $message = [
-             // 'idCard' => $result,
+          
               'Pin' => $this->input->get('Pin'),
               'message' => 'Added a resource'
           ];
@@ -136,7 +57,7 @@ class User extends REST_Controller {
         }
         else
         {
-            // Set the response and exit
+      
             $this->response([
                 'status' => FALSE,
                 'message' => 'Can not update data'
